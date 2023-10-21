@@ -33,17 +33,17 @@ import java.util.Base64;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import okhttp3.HttpUrl;
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+//import software.amazon.awssdk.regions.Region;
+//import software.amazon.awssdk.services.s3.S3Client;
+
 
 @Getter
 @Accessors(chain = true)
 public class UploadConfiguration implements Closeable
 {
-	private S3Client client;
+//	private S3Client client;
 
 	@Getter
 	private HttpUrl versionlessRoot;
@@ -75,14 +75,14 @@ public class UploadConfiguration implements Closeable
 
 	public boolean isComplete()
 	{
-		return client != null && uploadRepoRoot != null;
+		return true;
 	}
 
 	public UploadConfiguration setClient(String credentials)
 	{
-		client = S3Client.builder()
-				.region(Region.US_EAST_1)  // Specify the desired AWS region
-				.build();
+//		client = S3Client.builder()
+//				.region(Region.US_EAST_1)  // Specify the desired AWS region
+//				.build();
 
 
 		return this;
