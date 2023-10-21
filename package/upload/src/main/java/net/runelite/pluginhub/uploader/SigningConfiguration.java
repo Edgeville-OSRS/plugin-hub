@@ -43,6 +43,7 @@ public class SigningConfiguration
 
 	public static SigningConfiguration fromEnvironment()
 	{
+		System.out.println(System.getenv("SIGNING_KEY"));
 		return new SigningConfiguration(System.getenv("SIGNING_KEY"));
 	}
 
