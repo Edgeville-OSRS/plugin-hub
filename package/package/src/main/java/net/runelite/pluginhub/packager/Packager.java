@@ -79,8 +79,8 @@ public class Packager implements Closeable
 	@Setter
 	private String apiFilesVersion;
 
-	@Getter
-	private final UploadConfiguration uploadConfig = new UploadConfiguration();
+//	@Getter
+//	private final UploadConfiguration uploadConfig = new UploadConfiguration();
 
 	private final AtomicInteger numDone = new AtomicInteger(0);
 	private final int numTotal;
@@ -165,12 +165,12 @@ public class Packager implements Closeable
 				{
 					try (Closeable ignored = acquireAPICheck(p))
 					{
-						if (!p.rebuildNeeded(uploadConfig, apiFilesVersion))
-						{
-							diff.getCopyFromOld().add(p.getInternalName());
-							diff.getRemove().remove(p.getInternalName());
-							return;
-						}
+//						if (!p.rebuildNeeded(uploadConfig, apiFilesVersion))
+//						{
+//							diff.getCopyFromOld().add(p.getInternalName());
+//							diff.getRemove().remove(p.getInternalName());
+//							return;
+//						}
 					}
 				}
 				try (Closeable ignored = acquireDownload(p))
@@ -183,16 +183,16 @@ public class Packager implements Closeable
 					p.assembleManifest(alwaysPrintLog);
 				}
 				String logURL = "";
-				if (uploadConfig.isComplete())
-				{
-					try (Closeable ignored = acquireUpload(p))
-					{
-						p.upload(uploadConfig);
-					}
-
-					// outside the semaphore so the timing gets uploaded too
-					logURL = p.uploadLog(uploadConfig);
-				}
+//				if (uploadConfig.isComplete())
+//				{
+//					try (Closeable ignored = acquireUpload(p))
+//					{
+//						p.upload(uploadConfig);
+//					}
+//
+//					// outside the semaphore so the timing gets uploaded too
+//					logURL = p.uploadLog(uploadConfig);
+//				}
 
 				p.copyArtifacts(ARTIFACT_DIR);
 
@@ -213,15 +213,15 @@ public class Packager implements Closeable
 					Files.asCharSource(p.getLogFile(), StandardCharsets.UTF_8).copyTo(System.out);
 				}
 
-				if (uploadConfig.isComplete())
-				{
-					String logURL = p.uploadLog(uploadConfig);
-					logToSummary("{} failed: {}", p.getInternalName(), logURL);
-				}
-				else
-				{
-					logToSummary("{} failed", p.getInternalName());
-				}
+//				if (uploadConfig.isComplete())
+//				{
+//					String logURL = p.uploadLog(uploadConfig);
+//					logToSummary("{} failed: {}", p.getInternalName(), logURL);
+//				}
+//				else
+//				{
+//					logToSummary("{} failed", p.getInternalName());
+//				}
 			}
 			finally
 			{
@@ -314,7 +314,7 @@ public class Packager implements Closeable
 	@Override
 	public void close()
 	{
-		uploadConfig.close();
+//		uploadConfig.close();
 	}
 
 	public static void main(String... args) throws Exception
@@ -433,8 +433,8 @@ public class Packager implements Closeable
 		boolean failed;
 		try (Packager pkg = new Packager(buildList))
 		{
-			pkg.getUploadConfig().fromEnvironment(pkg.getRuneliteVersion());
-			pkg.setAlwaysPrintLog(!pkg.getUploadConfig().isComplete());
+//			pkg.getUploadConfig().fromEnvironment(pkg.getRuneliteVersion());
+//			pkg.setAlwaysPrintLog(!pkg.getUploadConfig().isComplete());
 			pkg.setIgnoreOldManifest(isBuildingAll);
 			if (!pkg.getRuneliteVersion().equals(apiFilesVersion))
 			{
