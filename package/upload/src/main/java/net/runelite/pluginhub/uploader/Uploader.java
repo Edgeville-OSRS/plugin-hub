@@ -55,81 +55,33 @@ public class Uploader
 			.read();
 		ManifestDiff diff = gson.fromJson(diffJSON, ManifestDiff.class);
 
-		try (UploadConfiguration uploadConfig = new UploadConfiguration().fromEnvironment(Util.readRLVersion()))
+
+		SigningConfiguration signingConfig = SigningConfiguration.fromEnvironment();
+
+		List<ExternalPluginManifest> manifests = new ArrayList<>();
+
+
+		if (diff.isIgnoreOldManifest())
 		{
-			SigningConfiguration signingConfig = SigningConfiguration.fromEnvironment();
-
-			List<ExternalPluginManifest> manifests = new ArrayList<>();
-			if (!diff.isIgnoreOldManifest() || (diff.getOldManifestVersion() != null && !diff.getCopyFromOld().isEmpty()))
-			{
-				String version = diff.getOldManifestVersion();
-				if (version == null)
-				{
-					version = Util.readRLVersion();
-				}
-				try (Response res = uploadConfig.getClient().newCall(new Request.Builder()
-					.url(uploadConfig.getVersionlessRoot().newBuilder()
-						.addPathSegment(version)
-						.addPathSegment(MANIFEST_NAME)
-						.addQueryParameter("c", System.nanoTime() + "")
-						.build())
-					.get()
-					.build())
-					.execute())
-				{
-					if (res.code() != 404)
-					{
-						Util.check(res);
-
-						BufferedSource src = res.body().source();
-
-						byte[] signature = new byte[src.readInt()];
-						src.readFully(signature);
-
-						byte[] data = src.readByteArray();
-						if (!signingConfig.verify(signature, data))
-						{
-							throw new RuntimeException("Unable to verify external plugin manifest");
-						}
-
-						manifests = gson.fromJson(new String(data, StandardCharsets.UTF_8),
-							new TypeToken<List<ExternalPluginManifest>>()
-							{
-							}.getType());
-					}
-				}
-			}
-
-			if (diff.isIgnoreOldManifest())
-			{
-				manifests.removeIf(m -> !diff.getCopyFromOld().contains(m.getInternalName()));
-			}
-
-			manifests.removeIf(m -> diff.getRemove().contains(m.getInternalName()));
-			manifests.addAll(diff.getAdd());
-			manifests.sort(Comparator.comparing(ExternalPluginManifest::getInternalName));
-
-			{
-				byte[] data = gson.toJson(manifests).getBytes(StandardCharsets.UTF_8);
-				byte[] sig = signingConfig.sign(data);
-
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				new DataOutputStream(out).writeInt(sig.length);
-				out.write(sig);
-				out.write(data);
-				byte[] manifest = out.toByteArray();
-
-				try (Response res = uploadConfig.getClient().newCall(new Request.Builder()
-					.url(uploadConfig.getUploadRepoRoot().newBuilder()
-						.addPathSegment(MANIFEST_NAME)
-						.build())
-					.put(RequestBody.create(null, manifest))
-					.build())
-					.execute())
-				{
-					Util.check(res);
-				}
-			}
+			manifests.removeIf(m -> !diff.getCopyFromOld().contains(m.getInternalName()));
 		}
+
+		manifests.removeIf(m -> diff.getRemove().contains(m.getInternalName()));
+		manifests.addAll(diff.getAdd());
+		manifests.sort(Comparator.comparing(ExternalPluginManifest::getInternalName));
+
+		{
+			byte[] data = gson.toJson(manifests).getBytes(StandardCharsets.UTF_8);
+			byte[] sig = signingConfig.sign(data);
+
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			new DataOutputStream(out).writeInt(sig.length);
+			out.write(sig);
+			out.write(data);
+			byte[] manifest = out.toByteArray();
+
+			Files.write(manifest, new File("/tmp/jars/manifest.js"));
+		}
+
 	}
 }

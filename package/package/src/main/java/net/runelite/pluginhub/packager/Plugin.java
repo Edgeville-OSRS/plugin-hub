@@ -311,59 +311,59 @@ public class Plugin implements Closeable
 		}
 	}
 
-	public boolean rebuildNeeded(UploadConfiguration uploadConfig, String previousVersion) throws IOException
-	{
-		if (previousVersion == null)
-		{
-			return true;
-		}
-
-		HttpUrl oldPluginRoot = uploadConfig.getVersionlessRoot().newBuilder()
-			.addPathSegment(previousVersion)
-			.addPathSegment(internalName)
-			.build();
-
-		try (Response res = uploadConfig.getClient().newCall(new Request.Builder()
-			.url(oldPluginRoot.newBuilder()
-				.addPathSegment(commit + SUFFIX_API)
-				.build())
-			.get()
-			.build()).execute())
-		{
-			if (res.code() == 404)
-			{
-				return true;
-			}
-			Util.check(res);
-
-			String missing = API.decode(res.body().byteStream())
-				.missingFrom(CURRENT_API)
-				.collect(Collectors.joining("\n"));
-
-			if (!missing.isEmpty())
-			{
-				writeLog("API changed; rebuild needed. changed:\n{}\n", missing);
-				return true;
-			}
-
-			HttpUrl pluginRoot = uploadConfig.getUploadRepoRoot().newBuilder()
-				.addPathSegment(internalName)
-				.build();
-
-			uploadConfig.mkdirs(pluginRoot);
-			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_JAR, true);
-			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_API, true);
-			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_SOURCES, true);
-			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_ICON, false);
-
-			return false;
-		}
-		catch (UncheckedIOException | IOException e)
-		{
-			writeLog("failed to check api compatibility\n", e);
-			return true;
-		}
-	}
+//	public boolean rebuildNeeded(UploadConfiguration uploadConfig, String previousVersion) throws IOException
+//	{
+//		if (previousVersion == null)
+//		{
+//			return true;
+//		}
+//
+//		HttpUrl oldPluginRoot = uploadConfig.getVersionlessRoot().newBuilder()
+//			.addPathSegment(previousVersion)
+//			.addPathSegment(internalName)
+//			.build();
+//
+//		try (Response res = uploadConfig.getClient().newCall(new Request.Builder()
+//			.url(oldPluginRoot.newBuilder()
+//				.addPathSegment(commit + SUFFIX_API)
+//				.build())
+//			.get()
+//			.build()).execute())
+//		{
+//			if (res.code() == 404)
+//			{
+//				return true;
+//			}
+//			Util.check(res);
+//
+//			String missing = API.decode(res.body().byteStream())
+//				.missingFrom(CURRENT_API)
+//				.collect(Collectors.joining("\n"));
+//
+//			if (!missing.isEmpty())
+//			{
+//				writeLog("API changed; rebuild needed. changed:\n{}\n", missing);
+//				return true;
+//			}
+//
+//			HttpUrl pluginRoot = uploadConfig.getUploadRepoRoot().newBuilder()
+//				.addPathSegment(internalName)
+//				.build();
+//
+//			uploadConfig.mkdirs(pluginRoot);
+//			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_JAR, true);
+//			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_API, true);
+//			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_SOURCES, true);
+//			uploadConfig.copy(oldPluginRoot, pluginRoot, commit + SUFFIX_ICON, false);
+//
+//			return false;
+//		}
+//		catch (UncheckedIOException | IOException e)
+//		{
+//			writeLog("failed to check api compatibility\n", e);
+//			return true;
+//		}
+//	}
 
 	public void download() throws IOException, PluginBuildException
 	{
@@ -896,58 +896,66 @@ public class Plugin implements Closeable
 
 	public void upload(UploadConfiguration uploadConfig) throws IOException
 	{
-		HttpUrl pluginRoot = uploadConfig.getUploadRepoRoot().newBuilder()
-			.addPathSegment(internalName)
-			.build();
-
-		uploadConfig.put(
-			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_JAR).build(),
-			jarFile);
-
-		if (apiFile.exists())
-		{
-			uploadConfig.put(
-				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_API).build(),
-				apiFile);
-		}
-
-		uploadConfig.put(
-			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_SOURCES).build(),
-			srcZipFile);
-
-		if (manifest.isHasIcon())
-		{
-			uploadConfig.put(
-				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_ICON).build(),
-				iconFile);
-		}
+//		HttpUrl pluginRoot = uploadConfig.getUploadRepoRoot().newBuilder()
+//			.addPathSegment(internalName)
+//			.build();
+//
+//		uploadConfig.put(
+//			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_JAR).build(),
+//			jarFile);
+//
+//		if (apiFile.exists())
+//		{
+//			uploadConfig.put(
+//				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_API).build(),
+//				apiFile);
+//		}
+//
+//		uploadConfig.put(
+//			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_SOURCES).build(),
+//			srcZipFile);
+//
+//		if (manifest.isHasIcon())
+//		{
+//			uploadConfig.put(
+//				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_ICON).build(),
+//				iconFile);
+//		}
 	}
 
-	public String uploadLog(UploadConfiguration uploadConfig) throws IOException
-	{
-		try
-		{
-			log.close();
-			log = null;
-		}
-		catch (IOException ignored)
-		{
-		}
-
-		HttpUrl url = uploadConfig.getUploadRepoRoot()
-			.newBuilder()
-			.addPathSegment(internalName)
-			.addPathSegment(commit + ".log")
-			.build();
-		uploadConfig.put(url, logFile);
-
-		return url.toString();
-	}
+//	public String uploadLog(UploadConfiguration uploadConfig) throws IOException
+//	{
+//		try
+//		{
+//			log.close();
+//			log = null;
+//		}
+//		catch (IOException ignored)
+//		{
+//		}
+//
+//		HttpUrl url = uploadConfig.getUploadRepoRoot()
+//			.newBuilder()
+//			.addPathSegment(internalName)
+//			.addPathSegment(commit + ".log")
+//			.build();
+//		uploadConfig.put(url, logFile);
+//
+//		return url.toString();
+//	}
 
 	public void copyArtifacts(File artifactDir) throws IOException
 	{
-		Files.copy(jarFile.toPath(), new File(artifactDir, getInternalName() + ".jar").toPath());
-		Files.copy(logFile.toPath(), new File(artifactDir, getInternalName() + ".log").toPath());
+		File dir = new File(artifactDir, getInternalName());
+		if(!dir.exists())
+		{
+			dir.mkdirs();
+		}
+		Files.copy(jarFile.toPath(), new File(dir, commit + ".jar").toPath());
+		Files.copy(logFile.toPath(), new File(dir, commit + ".log").toPath());
+		Files.copy(apiFile.toPath(), new File(dir, commit + ".api").toPath());
+		Files.copy(srcZipFile.toPath(), new File(dir,commit + "-sources.zip").toPath());
+		Files.copy(iconFile.toPath(), new File(dir, commit + ".png").toPath());
 	}
 
 	public void writeLog(String format, Object... args) throws IOException
