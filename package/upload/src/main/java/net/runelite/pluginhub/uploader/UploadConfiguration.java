@@ -33,8 +33,6 @@ import java.util.Base64;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import okhttp3.HttpUrl;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
 //import software.amazon.awssdk.regions.Region;
 //import software.amazon.awssdk.services.s3.S3Client;
 
