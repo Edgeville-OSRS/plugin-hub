@@ -130,8 +130,8 @@ public class Plugin implements Closeable
 
 		try
 		{
-			TMP_ROOT = Files.createDirectory(Path.of("./pluginhub-package")).toFile();
-			//TMP_ROOT.deleteOnExit();
+			TMP_ROOT = Files.createTempDirectory("pluginhub-package").toFile();
+			TMP_ROOT.deleteOnExit();
 
 			GRADLE_HOME = new File(com.google.common.io.Files.asCharSource(new File(Packager.PACKAGE_ROOT, "build/gradleHome"), StandardCharsets.UTF_8).read().trim());
 			if (!GRADLE_HOME.exists())
@@ -946,8 +946,11 @@ public class Plugin implements Closeable
 
 	public void copyArtifacts(File artifactDir) throws IOException
 	{
-		Files.copy(jarFile.toPath(), new File(artifactDir, getInternalName() + ".jar").toPath());
-		Files.copy(logFile.toPath(), new File(artifactDir, getInternalName() + ".log").toPath());
+		Files.copy(jarFile.toPath(), new File(artifactDir,getInternalName()+"/"+ jarFile.getName()).toPath());
+		Files.copy(logFile.toPath(), new File(artifactDir,getInternalName()+"/"+ logFile.getName()).toPath());
+		Files.copy(apiFile.toPath(), new File(artifactDir,getInternalName()+"/"+ apiFile.getName()).toPath());
+		Files.copy(srcZipFile.toPath(), new File(artifactDir,getInternalName()+"/"+ srcZipFile.getName()).toPath());
+		Files.copy(iconFile.toPath(), new File(artifactDir,getInternalName()+"/"+ iconFile.getName()).toPath());
 	}
 
 	public void writeLog(String format, Object... args) throws IOException
