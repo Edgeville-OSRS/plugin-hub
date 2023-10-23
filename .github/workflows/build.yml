@@ -76,8 +76,8 @@ jobs:
         retention-days: 1
     - uses: actions/upload-artifact@v3
       with:
-        name: jars
-        path: /tmp/jars
+        name: output
+        path: /pluginhub-package/
         retention-days: 1
   upload:
     environment: plugin-hub
