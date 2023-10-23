@@ -947,8 +947,10 @@ public class Plugin implements Closeable
 	public void copyArtifacts(File artifactDir) throws IOException
 	{
 		File dir = new File(artifactDir, getInternalName());
-		dir.mkdirs();
-		System.out.println("WTF " + new File(dir, commit + ".jar").getAbsolutePath());
+		if(!dir.exists())
+		{
+			dir.mkdirs();
+		}
 		Files.copy(jarFile.toPath(), new File(dir, commit + ".jar").toPath());
 		Files.copy(logFile.toPath(), new File(dir, commit + ".log").toPath());
 		Files.copy(apiFile.toPath(), new File(dir, commit + ".api").toPath());

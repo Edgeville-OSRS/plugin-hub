@@ -74,11 +74,7 @@ jobs:
         name: manifest_diff
         path: /tmp/manifest_diff
         retention-days: 1
-    - uses: actions/upload-artifact@v3
-      with:
-        name: repo
-        path: /tmp/jars
-        retention-days: 1
+
   upload:
     environment: plugin-hub
     if: (github.event_name != 'push' || github.repository_owner == 'runelite') && github.event_name != 'pull_request'
@@ -114,26 +110,6 @@ jobs:
         popd
     - uses: actions/upload-artifact@v3
       with:
-        name: manifest.js
-        path: /tmp/signedmanifest.js
+        name: repo
+        path: /tmp/jars
         retention-days: 1
-#    - name: Tar files
-#      run: tar -cvf plugins_output.tar /tmp/jars
-#
-#    - name: Upload Artifact
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: my-artifact
-#        path: plugins_output.tar
-#    - name: Commit changes
-#      id: commit
-#      run: |
-#        git config --global user.name "GHActions"
-#        git config --global user.email "github@pea2nuts.ru"
-#        git add ./tmp/
-#        git commit -m "Committing changes in /tmp/ directory" || echo "No changes to commit"
-#    - name: Push changes
-#      if: steps.commit.outputs.push == 'true'
-#      uses: ad-m/github-push-action@master
-#      with:
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
