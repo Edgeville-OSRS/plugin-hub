@@ -946,11 +946,12 @@ public class Plugin implements Closeable
 
 	public void copyArtifacts(File artifactDir) throws IOException
 	{
-		Files.copy(jarFile.toPath(), new File(artifactDir,getInternalName()+"/"+ jarFile.getName()).toPath());
-		Files.copy(logFile.toPath(), new File(artifactDir,getInternalName()+"/"+ logFile.getName()).toPath());
-		Files.copy(apiFile.toPath(), new File(artifactDir,getInternalName()+"/"+ apiFile.getName()).toPath());
-		Files.copy(srcZipFile.toPath(), new File(artifactDir,getInternalName()+"/"+ srcZipFile.getName()).toPath());
-		Files.copy(iconFile.toPath(), new File(artifactDir,getInternalName()+"/"+ iconFile.getName()).toPath());
+		System.out.println("WTF " + new File(new File(artifactDir, getInternalName()), jarFile.getName()).getAbsolutePath());
+		Files.copy(jarFile.toPath(), new File(new File(artifactDir, getInternalName()), jarFile.getName()).toPath());
+		Files.copy(logFile.toPath(), new File(new File(artifactDir, getInternalName()), logFile.getName()).toPath());
+		Files.copy(apiFile.toPath(), new File(new File(artifactDir, getInternalName()), apiFile.getName()).toPath());
+		Files.copy(srcZipFile.toPath(), new File(new File(artifactDir, getInternalName()),srcZipFile.getName()).toPath());
+		Files.copy(iconFile.toPath(), new File(new File(artifactDir, getInternalName()), iconFile.getName()).toPath());
 	}
 
 	public void writeLog(String format, Object... args) throws IOException
