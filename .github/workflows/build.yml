@@ -16,6 +16,7 @@ env:
   CACHE_VERSION: 2.2.0
 jobs:
   build:
+    environment: plugin-hub
     # any forks that predate this repo having an action will have actions
     # enabled by default, which will fail in a lot of cases because the branch
     # is new, which makes the differential build fail
@@ -74,7 +75,6 @@ jobs:
         path: /tmp/manifest_diff
         retention-days: 1
     - uses: actions/upload-artifact@v3
-      if: ${{ github.event_name == 'pull_request' }}
       with:
         name: jars
         path: /tmp/jars
@@ -112,15 +112,19 @@ jobs:
         pushd package
         ./gradlew :upload:run
         popd
-
-    - name: Tar files
-      run: tar -cvf plugins_output.tar /tmp/
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v3
       with:
-        name: my-artifact
-        path: plugins_output.tar
+        name: signedmanifest
+        path: /tmp/signedmanifest.js
+        retention-days: 1
+#    - name: Tar files
+#      run: tar -cvf plugins_output.tar /tmp/jars
+#
+#    - name: Upload Artifact
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: my-artifact
+#        path: plugins_output.tar
 #    - name: Commit changes
 #      id: commit
 #      run: |
