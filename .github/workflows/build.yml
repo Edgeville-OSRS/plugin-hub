@@ -80,6 +80,7 @@ jobs:
         path: /tmp/jars
         retention-days: 1
   upload:
+    environment: plugin-hub
     if: (github.event_name != 'push' || github.repository_owner == 'runelite') && github.event_name != 'pull_request'
     needs: build
     concurrency: upload
