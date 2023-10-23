@@ -1,6 +1,10 @@
 ![](https://runelite.net/img/logo.png)
 # plugin-hub [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
+This version of plugin-hub is modified to output the built jars in the github actions task as artifacts instead of uploading them to repo.runelite.net with WEBDAV. This allows you to more easily build all plugins from src for older plugin versions that are no longer hosted on repo.runelite.net.
+
+
+
 This repository contains markers for [RuneLite](https://github.com/runelite/runelite)
 plugins that are not supported by the RuneLite Developers. The plugins are
 provided "as is"; we make no guarantees about any plugin in this repo.
