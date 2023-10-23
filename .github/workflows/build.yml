@@ -76,8 +76,8 @@ jobs:
         retention-days: 1
     - uses: actions/upload-artifact@v3
       with:
-        name: output
-        path: /pluginhub-package/
+        name: repo
+        path: /tmp/jars
         retention-days: 1
   upload:
     environment: plugin-hub
@@ -114,7 +114,7 @@ jobs:
         popd
     - uses: actions/upload-artifact@v3
       with:
-        name: signedmanifest
+        name: manifest.js
         path: /tmp/signedmanifest.js
         retention-days: 1
 #    - name: Tar files
