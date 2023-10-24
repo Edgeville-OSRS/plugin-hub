@@ -1,6 +1,5 @@
 package net.runelite.pluginhub.packager;
 
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -14,14 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class PluginVersionDownloader {
     private static final String GITHUB_API_BASE_URL = "https://api.github.com/repos/";
     private static final String REPO_OWNER = "runelite";
     private static final String REPO_NAME = "plugin-hub";
     private static final String FILE_PATH = "plugins";
-    private static final String VERSION_NUMBER = "1.10.10.1";
+    private static final String VERSION_NUMBER = System.getenv("API_FILES_VERSION");
 
     public static String getCommitForVersion(String version)
     {
@@ -69,7 +67,6 @@ public class PluginVersionDownloader {
                 String fileLine;
                 while ((fileLine = fileReader.readLine()) != null)
                 {
-
                     result.append(fileLine);
                 }
                 fileReader.close();
@@ -92,7 +89,6 @@ public class PluginVersionDownloader {
 
     private static void getPluginFilesForCommit(String commitSha)
     {
-        String apiUrl = GITHUB_API_BASE_URL + REPO_OWNER + "/" + REPO_NAME + "/commits";
         try
         {
             String fileContentUrl = GITHUB_API_BASE_URL + REPO_OWNER + "/" + REPO_NAME + "/contents/" + FILE_PATH + "?ref=" + commitSha;
@@ -120,7 +116,7 @@ public class PluginVersionDownloader {
                     pluginsToDownload = Arrays.stream(System.getenv("FORCE_BUILD").split(",")).collect(Collectors.toList());
 
                 }
-                System.out.println(pluginsToDownload);
+
                 FileUtils.cleanDirectory(Packager.PLUGIN_ROOT);
                 JSONArray plugins = new JSONArray(fileResponse.toString());
                 for (int j = 0; j < plugins.length(); j++)
