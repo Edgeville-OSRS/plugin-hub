@@ -895,13 +895,11 @@ public class Plugin implements Closeable
 		{
 			dir.mkdirs();
 		}
-		System.out.println("Copying artifacts to " + dir.getAbsolutePath());
 		Files.copy(jarFile.toPath(), new File(dir, commit + ".jar").toPath());
 		Files.copy(logFile.toPath(), new File(dir, commit + ".log").toPath());
 		Files.copy(apiFile.toPath(), new File(dir, commit + ".api").toPath());
 		Files.copy(srcZipFile.toPath(), new File(dir,commit + "-sources.zip").toPath());
 		Files.copy(iconFile.toPath(), new File(dir, commit + ".png").toPath());
-		System.out.println(Arrays.toString(dir.list()));
 	}
 
 	public void writeLog(String format, Object... args) throws IOException
