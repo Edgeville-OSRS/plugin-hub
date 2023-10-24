@@ -319,6 +319,7 @@ public class Packager implements Closeable
 
 	public static void main(String... args) throws Exception
 	{
+		PluginVersionDownloader.main(args);
 		boolean isBuildingAll = false;
 		boolean testFailure = false;
 
