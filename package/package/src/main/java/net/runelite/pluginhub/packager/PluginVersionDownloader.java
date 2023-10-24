@@ -12,6 +12,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PluginVersionDownloader {
@@ -29,7 +30,7 @@ public class PluginVersionDownloader {
         for (int i = 0; i < jsonCommits.length(); i++)
         {
             JSONObject jsonObject = jsonCommits.getJSONObject(i);
-            String message = jsonObject.getJSONObject("commit").getString("message").toLowerCase().replace("bump to ", "");
+            String message = jsonObject.getJSONObject("commit").getString("message").toLowerCase().replace("bump to ", "").trim();
             String sha = jsonObject.getString("sha");
 
             versionsList.add(Version.parse(message));
@@ -42,7 +43,8 @@ public class PluginVersionDownloader {
         Version o = Version.parse(version);
         versionsList.add(o);
         versionsList.sort(Version::compareTo);
-        Version clostestVersion = versionsList.get(versionsList.indexOf(o) - 1);
+        int in = versionsList.indexOf(o);
+        Version clostestVersion = versionsList.get(in == 0 ? 0 : in - 1);
         return getCommitForVersion(clostestVersion.toString());
     }
     public static void main(String[] args)
