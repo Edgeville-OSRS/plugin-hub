@@ -37,9 +37,11 @@ dependencies {
 	implementation "org.ow2.asm:asm:9.3"
 	implementation "com.squareup.okhttp3:okhttp:3.14.9"
 	implementation "com.google.code.gson:gson:2.8.5"
+	implementation 'org.json:json:20231013'
 	implementation project(":upload")
 	implementation project(":apirecorder")
-
+	implementation 'org.kohsuke:github-api:1.317'
+	implementation 'commons-io:commons-io:2.11.0'
 	def lombok = "org.projectlombok:lombok:1.18.4";
 	compileOnly lombok
 	annotationProcessor lombok
