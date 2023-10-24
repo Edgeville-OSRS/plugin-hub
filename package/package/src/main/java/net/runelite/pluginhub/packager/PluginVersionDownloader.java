@@ -1,5 +1,7 @@
 package net.runelite.pluginhub.packager;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,6 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class PluginVersionDownloader {
     private static final String GITHUB_API_BASE_URL = "https://api.github.com/repos/";
@@ -109,14 +114,31 @@ public class PluginVersionDownloader {
                 }
                 fileReader.close();
 
+                List<String> pluginsToDownload = null;
+                if (!"ALL".equals(System.getenv("FORCE_BUILD")) && !Strings.isNullOrEmpty(System.getenv("FORCE_BUILD")))
+                {
+                    pluginsToDownload = StreamSupport.stream(
+                            Splitter.on(',')
+                                    .trimResults()
+                                    .omitEmptyStrings()
+                                    .split(System.getenv("FORCE_BUILD"))
+                                    .spliterator(), false).collect(Collectors.toList());
+
+                }
+
                 FileUtils.cleanDirectory(new File("./plugins"));
                 JSONArray fileContentObj = new JSONArray(fileResponse.toString());
                 for (int j = 0; j < fileContentObj.length(); j++)
                 {
                     JSONObject jsonObject = fileContentObj.getJSONObject(j);
+                    String name = jsonObject.getString("name");
+
                     String message = jsonObject.getString("download_url");
 
-                    saveFileFromUrl(message, "./plugins");
+                    if (pluginsToDownload == null || pluginsToDownload.contains(name))
+                    {
+                        saveFileFromUrl(message, "./plugins");
+                    }
                 }
             }
 
