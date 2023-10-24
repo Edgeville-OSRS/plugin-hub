@@ -54,7 +54,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.pluginhub.uploader.ManifestDiff;
-import net.runelite.pluginhub.uploader.UploadConfiguration;
 import net.runelite.pluginhub.uploader.Util;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
@@ -78,9 +77,6 @@ public class Packager implements Closeable
 
 	@Setter
 	private String apiFilesVersion;
-
-//	@Getter
-//	private final UploadConfiguration uploadConfig = new UploadConfiguration();
 
 	private final AtomicInteger numDone = new AtomicInteger(0);
 	private final int numTotal;
