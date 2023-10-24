@@ -894,63 +894,15 @@ public class Plugin implements Closeable
 		}
 	}
 
-	public void upload(UploadConfiguration uploadConfig) throws IOException
-	{
-//		HttpUrl pluginRoot = uploadConfig.getUploadRepoRoot().newBuilder()
-//			.addPathSegment(internalName)
-//			.build();
-//
-//		uploadConfig.put(
-//			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_JAR).build(),
-//			jarFile);
-//
-//		if (apiFile.exists())
-//		{
-//			uploadConfig.put(
-//				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_API).build(),
-//				apiFile);
-//		}
-//
-//		uploadConfig.put(
-//			pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_SOURCES).build(),
-//			srcZipFile);
-//
-//		if (manifest.isHasIcon())
-//		{
-//			uploadConfig.put(
-//				pluginRoot.newBuilder().addPathSegment(commit + SUFFIX_ICON).build(),
-//				iconFile);
-//		}
-	}
-
-//	public String uploadLog(UploadConfiguration uploadConfig) throws IOException
-//	{
-//		try
-//		{
-//			log.close();
-//			log = null;
-//		}
-//		catch (IOException ignored)
-//		{
-//		}
-//
-//		HttpUrl url = uploadConfig.getUploadRepoRoot()
-//			.newBuilder()
-//			.addPathSegment(internalName)
-//			.addPathSegment(commit + ".log")
-//			.build();
-//		uploadConfig.put(url, logFile);
-//
-//		return url.toString();
-//	}
-
 	public void copyArtifacts(File artifactDir) throws IOException
 	{
+
 		File dir = new File(artifactDir, getInternalName());
 		if(!dir.exists())
 		{
 			dir.mkdirs();
 		}
+		System.out.println("Copying artifacts to " + dir.getAbsolutePath());
 		Files.copy(jarFile.toPath(), new File(dir, commit + ".jar").toPath());
 		Files.copy(logFile.toPath(), new File(dir, commit + ".log").toPath());
 		Files.copy(apiFile.toPath(), new File(dir, commit + ".api").toPath());
