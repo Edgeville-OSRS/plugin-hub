@@ -127,10 +127,10 @@ public class PluginVersionDownloader {
                 }
 
                 FileUtils.cleanDirectory(new File("./plugins"));
-                JSONArray fileContentObj = new JSONArray(fileResponse.toString());
-                for (int j = 0; j < fileContentObj.length(); j++)
+                JSONArray plugins = new JSONArray(fileResponse.toString());
+                for (int j = 0; j < plugins.length(); j++)
                 {
-                    JSONObject jsonObject = fileContentObj.getJSONObject(j);
+                    JSONObject jsonObject = plugins.getJSONObject(j);
                     String name = jsonObject.getString("name");
 
                     String message = jsonObject.getString("download_url");
