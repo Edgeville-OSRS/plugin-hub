@@ -1,8 +1,20 @@
 ![](https://runelite.net/img/logo.png)
 # plugin-hub [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
-This version of plugin-hub is modified to output the built jars in the github actions task as artifacts instead of uploading them to repo.runelite.net with WEBDAV. This allows you to more easily build all plugins from src for older plugin versions that are no longer hosted on repo.runelite.net.
+This version of plugin-hub is modified to output the plugin repository in the github actions task as artifacts instead of uploading them to repo.runelite.net with WEBDAV. This allows you to more easily build all plugins from src for older plugin versions that are no longer hosted on repo.runelite.net.
 
+## How to use:
+1. Fork this repository
+2. Go to repo settings > Secrets and variables > Actions
+3. Create an environment called plugin-hub
+4. Add a secret called SIGNING_KEY with your private key
+5. Go to Actions
+6. Click build.yml
+7. Click Run Workflow
+8. Enter the list of plugins to build or type ALL to build all plugins
+9. Enter the RuneLite version for which you would like to build the plugins
+10. Click Run workflow
+11. After running scroll down to Artifacts and download the "repo" artifact
 
 
 This repository contains markers for [RuneLite](https://github.com/runelite/runelite)
