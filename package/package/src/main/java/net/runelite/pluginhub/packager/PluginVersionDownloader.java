@@ -92,7 +92,6 @@ public class PluginVersionDownloader {
     private static void getPluginFilesForCommit(String commitSha)
     {
         String apiUrl = GITHUB_API_BASE_URL + REPO_OWNER + "/" + REPO_NAME + "/commits";
-        System.out.println(apiUrl);
         try
         {
             String fileContentUrl = GITHUB_API_BASE_URL + REPO_OWNER + "/" + REPO_NAME + "/contents/" + FILE_PATH + "?ref=" + commitSha;
@@ -109,7 +108,6 @@ public class PluginVersionDownloader {
                 String fileLine;
                 while ((fileLine = fileReader.readLine()) != null)
                 {
-                    System.out.println(fileLine);
                     fileResponse.append(fileLine);
                 }
                 fileReader.close();
@@ -125,7 +123,7 @@ public class PluginVersionDownloader {
                                     .spliterator(), false).collect(Collectors.toList());
 
                 }
-
+                System.out.println(pluginsToDownload);
                 FileUtils.cleanDirectory(new File("./plugins"));
                 JSONArray plugins = new JSONArray(fileResponse.toString());
                 for (int j = 0; j < plugins.length(); j++)
