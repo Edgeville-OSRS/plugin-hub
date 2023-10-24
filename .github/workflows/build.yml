@@ -74,7 +74,11 @@ jobs:
         name: manifest_diff
         path: /tmp/manifest_diff
         retention-days: 1
-
+    - uses: actions/upload-artifact@v3
+      with:
+        name: repo1
+        path: /tmp/jars
+        retention-days: 1
   upload:
     environment: plugin-hub
     if: (github.event_name != 'push' || github.repository_owner == 'runelite') && github.event_name != 'pull_request'
