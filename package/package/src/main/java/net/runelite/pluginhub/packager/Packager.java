@@ -62,7 +62,7 @@ import org.slf4j.helpers.MessageFormatter;
 @Slf4j
 public class Packager implements Closeable
 {
-	private static final File PLUGIN_ROOT = new File("./plugins");
+	public static final File PLUGIN_ROOT = new File("./plugins");
 	public static final File PACKAGE_ROOT = new File("./package/").getAbsoluteFile();
 	private static final File ARTIFACT_DIR = new File("/tmp/jars");
 

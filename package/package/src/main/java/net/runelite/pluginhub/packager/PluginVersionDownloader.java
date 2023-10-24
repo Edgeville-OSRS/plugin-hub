@@ -21,7 +21,7 @@ public class PluginVersionDownloader {
     private static final String REPO_OWNER = "runelite";
     private static final String REPO_NAME = "plugin-hub";
     private static final String FILE_PATH = "plugins";
-    private static final String VERSION_NUMBER = System.getenv("API_FILES_VERSION");
+    private static final String VERSION_NUMBER = "1.10.10.1";
 
     public static String getCommitForVersion(String version)
     {
@@ -114,13 +114,14 @@ public class PluginVersionDownloader {
                 fileReader.close();
 
                 List<String> pluginsToDownload = null;
+
                 if (!"ALL".equals(System.getenv("FORCE_BUILD")) && !Strings.isNullOrEmpty(System.getenv("FORCE_BUILD")))
                 {
                     pluginsToDownload = Arrays.stream(System.getenv("FORCE_BUILD").split(",")).collect(Collectors.toList());
 
                 }
                 System.out.println(pluginsToDownload);
-                FileUtils.cleanDirectory(new File("./plugins"));
+                FileUtils.cleanDirectory(Packager.PLUGIN_ROOT);
                 JSONArray plugins = new JSONArray(fileResponse.toString());
                 for (int j = 0; j < plugins.length(); j++)
                 {
@@ -131,7 +132,7 @@ public class PluginVersionDownloader {
 
                     if (pluginsToDownload == null || pluginsToDownload.contains(name))
                     {
-                        saveFileFromUrl(message, "./plugins");
+                        saveFileFromUrl(message, Packager.PLUGIN_ROOT.getAbsolutePath());
                     }
                 }
             }
