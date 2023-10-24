@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -115,12 +116,7 @@ public class PluginVersionDownloader {
                 List<String> pluginsToDownload = null;
                 if (!"ALL".equals(System.getenv("FORCE_BUILD")) && !Strings.isNullOrEmpty(System.getenv("FORCE_BUILD")))
                 {
-                    pluginsToDownload = StreamSupport.stream(
-                            Splitter.on(',')
-                                    .trimResults()
-                                    .omitEmptyStrings()
-                                    .split(System.getenv("FORCE_BUILD"))
-                                    .spliterator(), false).collect(Collectors.toList());
+                    pluginsToDownload = Arrays.stream(System.getenv("FORCE_BUILD").split(",")).collect(Collectors.toList());
 
                 }
                 System.out.println(pluginsToDownload);
