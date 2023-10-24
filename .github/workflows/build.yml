@@ -76,7 +76,7 @@ jobs:
         retention-days: 1
     - uses: actions/upload-artifact@v3
       with:
-        name: repo1
+        name: repo
         path: /tmp/jars
         retention-days: 1
   upload:
@@ -115,5 +115,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: repo
-        path: /tmp/jars
+        path: /tmp/jars/manifest.js
         retention-days: 1
