@@ -79,7 +79,7 @@ public class Uploader
 			out.write(sig);
 			out.write(data);
 			byte[] manifest = out.toByteArray();
-
+			new File("/tmp/jars").mkdirs();
 			Files.write(manifest, new File("/tmp/jars/manifest.js"));
 		}
 
