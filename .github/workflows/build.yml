@@ -76,7 +76,7 @@ jobs:
         retention-days: 1
     - uses: actions/upload-artifact@v3
       with:
-        name: repo
+        name: API_FILES_VERSION
         path: /tmp/jars
         retention-days: 1
   upload:
@@ -114,6 +114,6 @@ jobs:
         popd
     - uses: actions/upload-artifact@v3
       with:
-        name: repo
+        name: API_FILES_VERSION
         path: /tmp/jars/manifest.js
         retention-days: 1

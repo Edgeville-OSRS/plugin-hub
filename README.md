@@ -2,12 +2,18 @@
 # plugin-hub [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
 This version of plugin-hub is modified to output the plugin repository in the github actions task as artifacts instead of uploading them to repo.runelite.net with WEBDAV. This allows you to more easily build all plugins from src for older plugin versions that are no longer hosted on repo.runelite.net.
+# Getting Started
 
-## How to use:
+## How to generate RSA keys & externalplugins.crt
+1. Go to KeyGen.java
+2. Fill in your organization info in the constants
+3. Run KeyGen.java to get publicKey.asc, privateKey.asc, and externalplugins.crt
+
+## How to build the plugin-hub repository:
 1. Fork this repository
 2. Go to repo settings > Secrets and variables > Actions
 3. Create an environment called plugin-hub
-4. Add a secret called SIGNING_KEY with your private key
+4. Add a secret called SIGNING_KEY with your privateKey.asc contents
 5. Go to Actions
 6. Click build.yml
 7. Click Run Workflow
@@ -15,6 +21,12 @@ This version of plugin-hub is modified to output the plugin repository in the gi
 9. Enter the RuneLite version for which you would like to build the plugins
 10. Click Run workflow
 11. After running scroll down to Artifacts and download the "repo" artifact
+
+## Next steps
+1. Add the repository files to your HTTP server
+2. Add your repo url in runelite.properties to runelite.pluginhub.url
+3. Copy externalplugins.crt to runelite-client\src\main\resources\net\runelite\client\externalplugins
+
 
 
 This repository contains markers for [RuneLite](https://github.com/runelite/runelite)
