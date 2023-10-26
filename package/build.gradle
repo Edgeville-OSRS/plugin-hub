@@ -43,13 +43,13 @@ subprojects {
 			configurations.runtimeClasspath.collect {
 				it.isDirectory() ? it : zipTree(it)
 			}
-		} {
-			exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 		}
 		with tasks.jar
 	}
 }
-
+//		{
+//			exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+//		}
 // we have this task then java -jar the output rather than using gradle run so
 // the daemon used to build this can be reused by a real plugin build
 task prep {
