@@ -114,6 +114,6 @@ jobs:
         popd
     - uses: actions/upload-artifact@v3
       with:
-        name: $API_FILES_VERSION
+        name: ${{ github.event.inputs.API_FILES_VERSION }}
         path: /tmp/jars/manifest.js
         retention-days: 1
